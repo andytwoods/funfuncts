@@ -48,10 +48,7 @@ class flist(list):
             if output_list is not None:
                 output_list.append(result)
             else:
-                if type(output) is dict:
-                    output_dict.update(result)
-                else:
-                    raise MustReturnDictError()
+                output_dict[val] = result
 
         # returns the first non-None element
         return output_list or output_dict
@@ -155,6 +152,9 @@ class fdict(dict):
             output_dict, output_list = _make_functional(output)
         return output_dict, output_list
 
+    def __repr__(self):
+        return super().__repr__() + '(functional)'
+
 
 class MustBeListError(Exception):
     pass
@@ -167,6 +167,3 @@ class MustBeDictError(Exception):
 class MustBeDictOrListError(Exception):
     pass
 
-
-class MustReturnDictError(Exception):
-    pass

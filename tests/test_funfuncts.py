@@ -6,7 +6,6 @@
 import pytest
 
 
-from funfuncts import funfuncts
 from funfuncts.funfuncts import fdict, flist, MustBeDictError, MustBeListError
 
 
@@ -43,7 +42,7 @@ class TestClass(object):
         assert result == {'b': 2}
 
         result = fd.filter(_lamdbda, [])
-        assert result ==[2]
+        assert result == [2]
 
         ###### reduce
         _lamdbda = lambda accumulating, val, key:  accumulating + val
@@ -70,7 +69,7 @@ class TestClass(object):
 
         assert l == fl
 
-        _lamdbda = lambda val: {val: str(val)+'v'}
+        _lamdbda = lambda val: str(val)+'v'
         result = fl.map(_lamdbda, {})
 
         assert result == {1: '1v', 2: '2v'}
@@ -109,5 +108,21 @@ class TestClass(object):
             .reduce(lambda accumulating, val, key: accumulating + val)
         assert result == 'b2c3'
 
+
+    def test_readme_egs(self):
+        l = [1, 2, 3]
+        r = flist(l).filter(lambda v: v > 1).map(lambda v: v + 1)
+        assert r == [3, 4]
+
+        d = {'a': 1, 'b': 2}
+        result = fdict(d).map(lambda val, key: str(val) + key, {})
+        assert result == {'a': '1a', 'b': '2b'}
+
+        fd = fdict({'a': 1, 'b': 2, 'c': 3})
+        result = fd \
+            .filter(lambda val, key: val > 1) \
+            .map(lambda val, key: key + str(val)) \
+            .reduce(lambda accumulating, val, key: accumulating + val)
+        assert result == 'b2c3'
 
 
